@@ -45,6 +45,11 @@ float ambientStrength = 0.1f;
 float specularStrength = 0.5f;
 int shininess = 32;
 
+// Shader
+const char* shaders[] = { "phong", "boulaung" };
+static const char* current_shader = "phong";
+bool usePhong = true;
+
 int main()
 {
 	glfwInit();
@@ -89,7 +94,8 @@ int main()
 	ImGui::StyleColorsDark();
 	io.FontGlobalScale=2.0f;
 
-	Shader shader("shaders/shader.vert", "shaders/shader.frag");
+	Shader phong("shaders/phong.vert", "shaders/phong.frag");
+	Shader gouraud("shaders/gouraud.vert", "shaders/gouraud.frag");
 	Shader lightSourceShader("shaders/lightSource.vert", "shaders/lightSource.frag");
 
 	// Textures
@@ -203,17 +209,35 @@ int main()
 		projection = glm::mat4(1.0f);
 		projection = glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-		shader.use();
-		shader.setFloat("uAmbientStrength", ambientStrength);
-		shader.setFloat("uSpecularStrength", specularStrength);
-		shader.setInt("uShininess", shininess);
-		shader.setVec3("uViewPos", camera.Position());
-		shader.setVec3("uObjectColour", 1.0f, 0.5f, 0.31f);
-		shader.setVec3("uLightColour", lightColour);
-		shader.setVec3("uLightPos", lightPos);
-		shader.setMat4("uModel", glm::value_ptr(model));
-		shader.setMat4("uView", glm::value_ptr(view));
-		shader.setMat4("uProjection", glm::value_ptr(projection));
+		if (current_shader == "phong")
+		{
+			phong.use();
+			phong.setFloat("uAmbientStrength", ambientStrength);
+			phong.setFloat("uSpecularStrength", specularStrength);
+			phong.setInt("uShininess", shininess);
+			phong.setVec3("uObjectColour", 1.0f, 0.5f, 0.31f);
+			phong.setVec3("uLightColour", lightColour);
+			phong.setVec3("uLightPos", lightPos);
+			phong.setMat4("uModel", glm::value_ptr(model));
+			phong.setMat4("uView", glm::value_ptr(view));
+			phong.setMat4("uProjection", glm::value_ptr(projection));
+		}
+
+		else
+		{
+			gouraud.use();
+			gouraud.setFloat("uAmbientStrength", ambientStrength);
+			gouraud.setFloat("uSpecularStrength", specularStrength);
+			gouraud.setInt("uShininess", shininess);
+			gouraud.setVec3("uViewPos", camera.Position());
+			gouraud.setVec3("uObjectColour", 1.0f, 0.5f, 0.31f);
+			gouraud.setVec3("uLightColour", lightColour);
+			gouraud.setVec3("uLightPos", lightPos);
+			gouraud.setMat4("uModel", glm::value_ptr(model));
+			gouraud.setMat4("uView", glm::value_ptr(view));
+			gouraud.setMat4("uProjection", glm::value_ptr(projection));
+		}
+
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -234,9 +258,22 @@ int main()
 			ImGui::Begin("LearnOpenGL");                          
 			ImGui::Text("Helper menu for learning OpenGL.");    
 			ImGui::NewLine();
+			if (ImGui::BeginCombo("lighting model", current_shader))
+			{
+				for (int n = 0; n < IM_ARRAYSIZE(shaders); n++)
+				{
+					bool is_selected = (current_shader == shaders[n]);
+					if (ImGui::Selectable(shaders[n], is_selected))
+						current_shader = shaders[n];
+						if (is_selected)
+							ImGui::SetItemDefaultFocus(); 
+				}
+				ImGui::EndCombo();
+			}
 			ImGui::SliderFloat("ambient strength", &ambientStrength, 0.0f, 1.0f);
 			ImGui::SliderFloat("specular strength", &specularStrength, 0.0f, 1.0f);
 			ImGui::SliderInt("shininess", &shininess, 0, 128);
+			ImGui::NewLine();
 			ImGui::ColorEdit3("clear color", (float*)&clear_color);
 			ImGui::End();
 		}

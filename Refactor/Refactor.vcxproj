@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{75212b42-f618-43b0-9c64-2923d6d9e513}</ProjectGuid>
-    <RootNamespace>_04_BasicLightingEx02</RootNamespace>
+    <ProjectGuid>{4c99afc8-60a6-4ad2-a351-6719c5ef7bc9}</ProjectGuid>
+    <RootNamespace>Refactor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -184,10 +184,12 @@
     <ClInclude Include="src\texture\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\gouraud.frag" />
+    <None Include="shaders\gouraud.vert" />
     <None Include="shaders\lightSource.frag" />
     <None Include="shaders\lightSource.vert" />
-    <None Include="shaders\shader.frag" />
-    <None Include="shaders\shader.vert" />
+    <None Include="shaders\phong.frag" />
+    <None Include="shaders\phong.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />

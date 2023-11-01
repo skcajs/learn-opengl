@@ -94,10 +94,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\shader.frag" />
-    <None Include="shaders\shader.vert" />
+    <None Include="shaders\phong.frag" />
+    <None Include="shaders\phong.vert" />
     <None Include="shaders\lightSource.vert" />
     <None Include="shaders\lightSource.frag" />
+    <None Include="shaders\gouraud.frag" />
+    <None Include="shaders\gouraud.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\container.jpg">

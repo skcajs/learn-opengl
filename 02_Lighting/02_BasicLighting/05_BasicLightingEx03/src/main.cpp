@@ -207,7 +207,6 @@ int main()
 		shader.setFloat("uAmbientStrength", ambientStrength);
 		shader.setFloat("uSpecularStrength", specularStrength);
 		shader.setInt("uShininess", shininess);
-		shader.setVec3("uViewPos", camera.Position());
 		shader.setVec3("uObjectColour", 1.0f, 0.5f, 0.31f);
 		shader.setVec3("uLightColour", lightColour);
 		shader.setVec3("uLightPos", lightPos);
@@ -237,6 +236,7 @@ int main()
 			ImGui::SliderFloat("ambient strength", &ambientStrength, 0.0f, 1.0f);
 			ImGui::SliderFloat("specular strength", &specularStrength, 0.0f, 1.0f);
 			ImGui::SliderInt("shininess", &shininess, 0, 128);
+			ImGui::NewLine();
 			ImGui::ColorEdit3("clear color", (float*)&clear_color);
 			ImGui::End();
 		}
